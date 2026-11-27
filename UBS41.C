@@ -1,40 +1,60 @@
+
 #include <stdio.h>
-#include <string.h>    // Header file for string functions
 
 int main()
 {
-    char str1[100], str2[100], str3[100];
+    FILE *fp;
+    int roll_no;
+    char name[50];
+    float marks;
 
-    printf("\n Enter First String: ");
-    scanf("%s", str1);
+    printf("Enter Roll Number: ");
+    scanf("%d", &roll_no);
 
-    printf("\n Enter Second String: ");
-    scanf("%s", str2);
+    printf("Enter Student Name: ");
+    scanf("%s", name);
 
-    // 1) Copy one string into another
-    strcpy(str3, str1);
-    printf("\n Copied String: %s", str3);
+    printf("Enter Marks: ");
+    scanf("%f", &marks);
 
-    // 2) Reverse the first string
-    printf("\n Reverse of First String: %s", strrev(str1));
+    // Create and open file in write mode
+    fp = fopen("student.txt", "w");
 
-    // 3) Find the length of both strings
-    printf("\n Length of First String: %d", strlen(str1));
-    printf("\n Length of Second String: %d", strlen(str2));
-
-    // 4) Compare two strings
-    if (strcmp(str1, str2) == 0)
+    if (fp == NULL)
     {
-        printf("\n Both Strings are Equal");
-    }
-    else
-    {
-        printf("\n Both Strings are Not Equal");
+        printf("Unable to create file.");
+        return 1;
     }
 
-    // 5) Concatenate second string to first string
-    strcat(str1, str2);
-    printf("\n Concatenated String: %s", str1);
+    // Write student details into file
+    fprintf(fp, "Roll Number: %d\n", roll_no);
+    fprintf(fp, "Name: %s\n", name);
+    fprintf(fp, "Marks: %.2f\n", marks);
+
+    // Close the file
+    fclose(fp);
+
+    printf("\nStudent details stored successfully!\n");
+
+    // Open file in read mode
+    fp = fopen("student.txt", "r");
+
+    if (fp == NULL)
+    {
+        printf("Unable to open file.");
+        return 1;
+    }
+
+    // Display stored data
+    printf("\n----- Student Details -----\n");
+
+    while ((roll_no = fgetc(fp)) != EOF)
+    {
+        putchar(roll_no);
+    }
+
+    // Close the file
+    fclose(fp);
 
     return 0;
 }
